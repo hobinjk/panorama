@@ -18,19 +18,22 @@ function transformRANSAC(points1, points2) {
     var match1 = [];
     var match2 = [];
 
-    for (var i = 0; i < points1.length; i++) {
+    for (var i = 0; i < points1.rows; i++) {
       // transform points1 to points2
-      var tpoints2 = mul(H, transpose(xyToXyz(points1)));
+      var point1 = Matrix.of([[points1.get(i, 0), points1.get(i, 1), 1]]);
+      var point2 = Matrix.of([[points2.get(i, 0), points2.get(i, 1)]]);
+      var tpoint2 = mul(H, transpose(point1));
 
-      // normalize tpoints2 in (x, y) coordinates
-      // [ tpoints2(1)/tpoints2(3), tpoints2(2)/tpoints2(3) ];
-      tpoints2 = xyzToXy(tpoints2);
-      var dist = norm(sub(tpoints2, points2));
+      // normalize tpoint2 in (x, y) coordinates
+      // [ tpoint2(1)/tpoint2(3), tpoint2(2)/tpoint2(3) ];
+      tpoint2 = xyzToXy(transpose(tpoint2));
+      var dist = norm(sub(tpoint2, point2));
 
       if (dist < threshold) {
+        console.log('a miracle has occured');
         currentScore += 1;
-        match1.push(points1[i]);
-        match2.push(points2[i]);
+        match1.push(point1.data[0]);
+        match2.push(point2.data[0]);
       }
     }
 

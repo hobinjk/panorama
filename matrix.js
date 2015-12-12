@@ -43,19 +43,29 @@ Matrix.prototype.set = function(row, col, value) {
 
 function xyToXyz(points) {
   var out = new Matrix(points.rows, 3);
-  for (var r = 0; r < row; r++) {
-    out.data[r][0] = points[r][0];
-    out.data[r][1] = points[r][1];
-    out.data[r][2] = 1;
+  for (var r = 0; r < points.rows; r++) {
+    out.set(r, 0, points.get(r, 0));
+    out.set(r, 1, points.get(r, 1));
+    out.set(r, 2, 1);
   }
   return out;
 }
 
 function xyzToXy(points) {
   var out = new Matrix(points.rows, 2);
-  for (var r = 0; r < row; r++) {
-    out.data[r][0] = points.data[r][0] / points.data[r][2];
-    out.data[r][1] = points.data[r][1] / points.data[r][2];
+  for (var r = 0; r < points.rows; r++) {
+    out.set(r, 0, points.get(r, 0) / points.get(r, 2));
+    out.set(r, 1, points.get(r, 1) / points.get(r, 2));
+  }
+  return out;
+}
+
+function transpose(mat) {
+  var out = new Matrix(mat.columns, mat.rows);
+  for (var i = 0; i < mat.rows; i++) {
+    for (var j = 0; j < mat.columns; j++) {
+      out.set(j, i, mat.get(i, j));
+    }
   }
   return out;
 }
@@ -63,8 +73,8 @@ function xyzToXy(points) {
 function mul(matA, matB) {
   var out = new Matrix(matA.rows, matB.columns);
   for (var i = 0; i < matA.rows; i++) {
-    for (var j = 0; j < matA.columns; j++) {
-      for (var k = 0; k < matB.columns; k++) {
+    for (var j = 0; j < matB.columns; j++) {
+      for (var k = 0; k < matB.rows; k++) {
         out.data[i][j] += matA.data[i][k] * matB.data[k][j];
       }
     }
@@ -84,7 +94,7 @@ function mulDot(matA, matB) {
 
 function randomChoices(max, count) {
   var choices = [];
-  for (var i = 0; i < count; i++) {
+  while (choices.length < count) {
     var choice = Math.floor(Math.random() * max);
     if (choices.indexOf(choice) < 0) {
       choices.push(choice);
@@ -110,13 +120,13 @@ function norm(mat) {
       norm += mat.data[i][j] * mat.data[i][j];
     }
   }
-  return norm;
+  return Math.sqrt(norm);
 }
 
 function sub(matA, matB) {
   var out = new Matrix(matA.rows, matA.columns);
-  for (var i = 0; i < mat.rows; i++) {
-    for (var j = 0; j < mat.columns; j++) {
+  for (var i = 0; i < matA.rows; i++) {
+    for (var j = 0; j < matA.columns; j++) {
       out.data[i][j] = matA.data[i][j] - matB.data[i][j];
     }
   }
