@@ -3,7 +3,7 @@ function transformRANSAC(points1, points2) {
   var bestScore = 0;
   var bestMatch1 = [];
   var bestMatch2 = [];
-  var numIteration = 100;
+  var numIteration = 1000;
   var threshold = 1;
 
   for (var iter = 0; iter < numIteration; iter++) {

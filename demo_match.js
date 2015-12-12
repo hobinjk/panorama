@@ -41,7 +41,7 @@ function run() {
   var matchedPointsB = matchedPointsAB[1];
 
   ctxMatch.strokeStyle = '#ffa400';
-  for (var i = 0; i < matchedPointsA.length; i++) {
+  for (var i = 0; i < matchedPointsA.rows; i++) {
     var pointA = matchedPointsA.data[i];
     var pointB = matchedPointsB.data[i];
     ctxMatch.beginPath();

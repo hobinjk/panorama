@@ -32,7 +32,7 @@ function drawVideoFrame() {
   window.requestAnimationFrame(drawVideoFrame);
   videoImageContext.drawImage(video, 0, 0);
   var imageData = videoImageContext.getImageData(0, 0, width, height);
-  var harris = detectHarrisFeatures(imageData);
+  var harris = detectHarrisFeatures(convertToGray(imageData));
   for (var row = 0; row < height; row++) {
     for (var col = 0; col < width; col++) {
       imageData.data[((row * width + col) << 2) + 0] = harris.data[row][col];
