@@ -8,20 +8,20 @@ function fitHomography(x1, x2) {
   var A = new Matrix(2 * x1.rows, 9);
   var index = 0;
   for (var i = 0; i < x1.rows; i++) {
-    A[index][0] = x1[i][0];
-    A[index][1] = x1[i][1];
-    A[index][2] = 1;
-    A[index][6] = -x2[i][0] * x1[i][0];
-    A[index][7] = -x2[i][0] * x1[i][1];
-    A[index][8] = -x2[i][0];
+    A.set(index, 0, x1.get(i, 0));
+    A.set(index, 1, x1.get(i, 1));
+    A.set(index, 2, 1);
+    A.set(index, 6, -x2.get(i, 0) * x1.get(i, 0));
+    A.set(index, 7, -x2.get(i, 0) * x1.get(i, 1));
+    A.set(index, 8, -x2.get(i, 0));
     index += 1;
 
-    A[index][3] = x1[i][0];
-    A[index][4] = x1[i][1];
-    A[index][5] = 1;
-    A[index][6] = -x2[i][1] * x1[i][0];
-    A[index][7] = -x2[i][1] * x1[i][1];
-    A[index][8] = -x2[i][1];
+    A.set(index, 3, x1.get(i, 0));
+    A.set(index, 4, x1.get(i, 1));
+    A.set(index, 5, 1);
+    A.set(index, 6, -x2.get(i, 1) * x1.get(i, 0));
+    A.set(index, 7, -x2.get(i, 1) * x1.get(i, 1));
+    A.set(index, 8, -x2.get(i, 1));
     index += 1;
   }
 
@@ -45,14 +45,14 @@ function fitHomography(x1, x2) {
   // reshape to 3 x 3 then transpose
   // unrolled out of laziness
   var hTransform = new Matrix(3, 3);
-  hTransform.data[0][0] = minVector.data[0][0];
-  hTransform.data[0][1] = minVector.data[1][0];
-  hTransform.data[0][2] = minVector.data[2][0];
-  hTransform.data[1][0] = minVector.data[3][0];
-  hTransform.data[1][1] = minVector.data[4][0];
-  hTransform.data[1][2] = minVector.data[5][0];
-  hTransform.data[2][0] = minVector.data[6][0];
-  hTransform.data[2][1] = minVector.data[7][0];
-  hTransform.data[2][2] = minVector.data[8][0];
+  hTransform.set(0, 0, minVector.data.get(0, 0));
+  hTransform.set(0, 1, minVector.data.get(1, 0));
+  hTransform.set(0, 2, minVector.data.get(2, 0));
+  hTransform.set(1, 0, minVector.data.get(3, 0));
+  hTransform.set(1, 1, minVector.data.get(4, 0));
+  hTransform.set(1, 2, minVector.data.get(5, 0));
+  hTransform.set(2, 0, minVector.data.get(6, 0));
+  hTransform.set(2, 1, minVector.data.get(7, 0));
+  hTransform.set(2, 2, minVector.data.get(8, 0));
   return hTransform;
 }
