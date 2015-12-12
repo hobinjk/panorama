@@ -31,10 +31,9 @@ function convolve(image, kernel) {
 var sobelX = Matrix.of([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]);
 var sobelY = Matrix.of([[1, 2, 1], [0, 0, 0], [-1, -2, -1]]);
 
-function detectHarrisFeatures(imageRGB) {
-  var image = convertToGray(imageRGB);
-  var win = 3;
-  var k = 0.04; // opencv recommended
+function detectHarrisFeatures(image) {
+  var win = 2;
+  var k = 0.04; // opencv recommends 0.04
   var xDeriv = convolve(image, sobelX);
   var yDeriv = convolve(image, sobelY);
 
@@ -76,12 +75,12 @@ function detectHarrisFeatures(imageRGB) {
 
 function maxSupress(harris) {
   var points = [];
-  var win = 4;
+  var win = 7;
   for (var row = win; row < harris.rows - win; row++) {
     for (var col = win; col < harris.columns - win; col++) {
       var max = true;
       var value = harris.data[row][col];
-      if (value < 150) {
+      if (value < 80) {
         continue;
       }
 

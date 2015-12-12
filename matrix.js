@@ -70,7 +70,7 @@ function randomChoices(max, count) {
       choices.push(choice);
     }
   }
-  return subset;
+  return choices;
 }
 
 function subset(points, choices) {

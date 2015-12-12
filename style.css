@@ -1,4 +1,11 @@
-#source {
+#source, .source {
   position: absolute;
   visibility: hidden;
+}
+
+#canvas-a, #canvas-b {
+  opacity: 0.3;
+}
+#canvas-a, #canvas-b, #canvas-match {
+  position: absolute;
 }
