@@ -9,7 +9,7 @@ function run() {
     alert('Your browser does not support getUserMedia. Please upgrade');
     return;
   }
-  navigator.getUserMedia({video: {width: 1280, height: 720}},
+  navigator.getUserMedia({video: {width: 320, height: 240}},
                          onMediaStream, onPermissionDenied);
 }
 
@@ -32,6 +32,15 @@ function drawVideoFrame() {
   window.requestAnimationFrame(drawVideoFrame);
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
     videoImageContext.drawImage(video, 0, 0);
+    var imageData = videoImageContext.getImageData(0, 0, width, height);
+    var harris = detectHarrisFeatures(imageData);
+    var points = maxSupress(harris);
+    videoImageContext.fillStyle = '#ffa400';
+    for (var i = 0; i < points.rows; i++) {
+      var x = points.data[i][1];
+      var y = points.data[i][0];
+      videoImageContext.fillRect(x - 5, y - 5, 11, 11);
+    }
   }
 }
 
