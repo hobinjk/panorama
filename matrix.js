@@ -21,6 +21,26 @@ Matrix.of = function(data) {
   return mat;
 };
 
+/**
+ * Get a value
+ * @param {number} row
+ * @param {number} col
+ * @return {number} value
+ */
+Matrix.prototype.get = function(row, col) {
+  return this.data[row][col];
+};
+
+/**
+ * Set a value
+ * @param {number} row
+ * @param {number} col
+ * @param {number} value
+ */
+Matrix.prototype.set = function(row, col, value) {
+  this.data[row][col] = value;
+};
+
 function xyToXyz(points) {
   var out = new Matrix(points.rows, 3);
   for (var r = 0; r < row; r++) {
