@@ -25,18 +25,6 @@ function fitHomography(x1, x2) {
     index += 1;
   }
 
-  // Uses http://www.akiti.ca/EigR12Solver.html
-  // var eigVecs = new Matrix(9, 9);
-  // var eigValuesReal = new Array(9);
-  // var eigValuesImag = new Array(9);
-  // var output = {};
-  // calcEigSysReal(9, mul(transpose(A), A).data, eigVecs.data,
-  //                eigValuesReal, eigValuesImag, output);
-
-  // var minEigValue = eigValuesReal[1];
-  // var minEigIdx = 1;
-  // for (var eigIdx = 2; eigIdx < eigValuesReal.length; eigIdx++) {
-
   var eigA = numeric.eig(mul(transpose(A), A).data);
   var eigValuesReal = eigA.lambda.x;
   var minEigValue = eigValuesReal[0];
@@ -52,7 +40,6 @@ function fitHomography(x1, x2) {
 
   var minVector = new Matrix(eigA.E.x.length, 1);
   for (var vecI = 0; vecI < eigA.E.x.length; vecI++) {
-    // Weirdo reversal because ?????
     minVector.data[vecI][0] = eigA.E.x[vecI][minEigIdx];
   }
 
@@ -68,14 +55,5 @@ function fitHomography(x1, x2) {
   hTransform.set(2, 0, minVector.get(6, 0));
   hTransform.set(2, 1, minVector.get(7, 0));
   hTransform.set(2, 2, minVector.get(8, 0));
-  // hTransform.set(0, 0, eigVecs.get(0, minEigIdx));
-  // hTransform.set(0, 1, eigVecs.get(1, minEigIdx));
-  // hTransform.set(0, 2, eigVecs.get(2, minEigIdx));
-  // hTransform.set(1, 0, eigVecs.get(3, minEigIdx));
-  // hTransform.set(1, 1, eigVecs.get(4, minEigIdx));
-  // hTransform.set(1, 2, eigVecs.get(5, minEigIdx));
-  // hTransform.set(2, 0, eigVecs.get(6, minEigIdx));
-  // hTransform.set(2, 1, eigVecs.get(7, minEigIdx));
-  // hTransform.set(2, 2, eigVecs.get(8, minEigIdx));
   return hTransform;
 }

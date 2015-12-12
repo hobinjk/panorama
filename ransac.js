@@ -3,7 +3,7 @@ function transformRANSAC(points1, points2) {
   var bestScore = 0;
   var bestMatch1 = [];
   var bestMatch2 = [];
-  var numIteration = 1000;
+  var numIteration = 100;
   var threshold = 1;
 
   for (var iter = 0; iter < numIteration; iter++) {
@@ -25,12 +25,10 @@ function transformRANSAC(points1, points2) {
       var tpoint2 = mul(H, transpose(point1));
 
       // normalize tpoint2 in (x, y) coordinates
-      // [ tpoint2(1)/tpoint2(3), tpoint2(2)/tpoint2(3) ];
       tpoint2 = xyzToXy(transpose(tpoint2));
       var dist = norm(sub(tpoint2, point2));
 
       if (dist < threshold) {
-        console.log('a miracle has occured');
         currentScore += 1;
         match1.push(point1.data[0]);
         match2.push(point2.data[0]);
@@ -46,5 +44,5 @@ function transformRANSAC(points1, points2) {
   }
 
   // compute the homography using the best matches
-  return fitHomography(bestMatch1, bestMatch2);
+  return fitHomography(Matrix.of(bestMatch1), Matrix.of(bestMatch2));
 }
