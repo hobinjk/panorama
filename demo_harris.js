@@ -9,7 +9,7 @@ function run() {
     alert('Your browser does not support getUserMedia. Please upgrade');
     return;
   }
-  navigator.getUserMedia({video: {width: 1280, height: 720}},
+  navigator.getUserMedia({video: {width: 640, height: 360}},
                          onMediaStream, onPermissionDenied);
 }
 
@@ -30,9 +30,17 @@ function onVideoLoaded() {
 
 function drawVideoFrame() {
   window.requestAnimationFrame(drawVideoFrame);
-  if (video.readyState === video.HAVE_ENOUGH_DATA) {
-    videoImageContext.drawImage(video, 0, 0);
+  videoImageContext.drawImage(video, 0, 0);
+  var imageData = videoImageContext.getImageData(0, 0, width, height);
+  var harris = detectHarrisFeatures(imageData);
+  for (var row = 0; row < height; row++) {
+    for (var col = 0; col < width; col++) {
+      imageData.data[((row * width + col) << 2) + 0] = harris.data[row][col];
+      imageData.data[((row * width + col) << 2) + 1] = harris.data[row][col];
+      imageData.data[((row * width + col) << 2) + 2] = harris.data[row][col];
+    }
   }
+  videoImageContext.putImageData(imageData, 0, 0);
 }
 
 function onMediaStream(mediaStream) {
