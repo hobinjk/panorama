@@ -35,7 +35,6 @@ function detectHarrisFeatures(imageRGB) {
   var sobelX = Matrix.of([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]);
   var sobelY = Matrix.of([[1, 2, 1], [0, 0, 0], [-1, -2, -1]]);
   var xDeriv = convolve(image, sobelX);
-  return xDeriv;
   var yDeriv = convolve(image, sobelY);
 
   var xxDeriv = mulDot(xDeriv, xDeriv);

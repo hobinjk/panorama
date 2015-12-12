@@ -20,7 +20,7 @@ function transformRANSAC(points1, points2) {
 
     for (var i = 0; i < points1.length; i++) {
       // transform points1 to points2
-      var tpoints2 = mult(H, transpose(xyToXyz(points1)));
+      var tpoints2 = mul(H, transpose(xyToXyz(points1)));
 
       // normalize tpoints2 in (x, y) coordinates
       // [ tpoints2(1)/tpoints2(3), tpoints2(2)/tpoints2(3) ];

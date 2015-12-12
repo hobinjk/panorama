@@ -34,18 +34,18 @@ function xyToXyz(points) {
 function xyzToXy(points) {
   var out = new Matrix(points.rows, 2);
   for (var r = 0; r < row; r++) {
-    out.data[r][0] = points[r][0] / points[r][2];
-    out.data[r][1] = points[r][1] / points[r][2];
+    out.data[r][0] = points.data[r][0] / points.data[r][2];
+    out.data[r][1] = points.data[r][1] / points.data[r][2];
   }
   return out;
 }
 
-function mult(matA, matB) {
+function mul(matA, matB) {
   var out = new Matrix(matA.rows, matB.columns);
   for (var i = 0; i < matA.rows; i++) {
     for (var j = 0; j < matA.columns; j++) {
       for (var k = 0; k < matB.columns; k++) {
-        out.data[i][j] += matA[i][k] * matB[k][j];
+        out.data[i][j] += matA.data[i][k] * matB.data[k][j];
       }
     }
   }
@@ -56,7 +56,7 @@ function mulDot(matA, matB) {
   var out = new Matrix(matA.rows, matA.columns);
   for (var i = 0; i < matA.rows; i++) {
     for (var j = 0; j < matA.columns; j++) {
-      out.data[i][j] = matA[i][j] * matB[i][j];
+      out.data[i][j] = matA.data[i][j] * matB.data[i][j];
     }
   }
   return out;
