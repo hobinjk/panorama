@@ -28,12 +28,13 @@ function convolve(image, kernel) {
   return out;
 }
 
+var sobelX = Matrix.of([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]);
+var sobelY = Matrix.of([[1, 2, 1], [0, 0, 0], [-1, -2, -1]]);
+
 function detectHarrisFeatures(imageRGB) {
   var image = convertToGray(imageRGB);
-  var win = 2;
+  var win = 3;
   var k = 0.004; // opencv default?
-  var sobelX = Matrix.of([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]]);
-  var sobelY = Matrix.of([[1, 2, 1], [0, 0, 0], [-1, -2, -1]]);
   var xDeriv = convolve(image, sobelX);
   var yDeriv = convolve(image, sobelY);
 
@@ -41,7 +42,8 @@ function detectHarrisFeatures(imageRGB) {
   var xyDeriv = mulDot(xDeriv, yDeriv);
   var yyDeriv = mulDot(yDeriv, yDeriv);
 
-  var harris = new Matrix(image.height, image.width);
+  var harris = new Matrix(image.rows, image.columns);
+  var maxScore = 1;
   for (var row = win; row < harris.rows - win; row++) {
     for (var col = win; col < harris.columns - win; col++) {
       var c = new Matrix(2, 2);
@@ -54,7 +56,18 @@ function detectHarrisFeatures(imageRGB) {
         }
       }
       var traceC = c.data[0][0] + c.data[1][1];
-      harris.data[row][col] = numeric.det(c.data) - k * traceC * traceC;
+      var detC = c.data[0][0] * c.data[1][1] - c.data[0][1] * c.data[1][0];
+      var harrisScore = detC - k * traceC * traceC;
+      harris.data[row][col] = harrisScore;
+      if (harrisScore > maxScore) {
+        maxScore = harrisScore;
+      }
+    }
+  }
+
+  for (var row = 0; row < harris.rows; row++) {
+    for (var col = 0; col < harris.columns; col++) {
+      harris.data[row][col] *= 255 / maxScore;
     }
   }
 
